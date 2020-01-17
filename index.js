@@ -15,8 +15,8 @@ const html = files[0].toString('utf8');
 const $ = cherrio.load(html);
 
 const msgs = $('div.message.default');
-
 const data = [];
+
 msgs.map((i, m) => {
   const msg = {};
   const $ = cherrio.load(m);
@@ -42,11 +42,28 @@ msgs.map((i, m) => {
 
   msg.timestamp = $('.message > .body > .date').attr('title')
 
-  // if (msg.text === "Достижений вам в этом году.") debugger
-
   msg.repost = !!$('.forwarded.body').length
-    
-  // debugger
+  msg.isMedia = !!$('.media_wrap').length
+  msg.isPoll = !!$('.media_poll').length
+
+  const typeMedia = $('.media > .body > .title').text().trim()
+  msg.isSticker = typeMedia === 'Sticker'
+  msg.isPhoto = typeMedia === 'Photo'
+  msg.isAnimation = typeMedia === 'Animation'
+
+  const status = $('.media > .body > .status').text().split(',').map(v => v.trim());
+  if (msg.isSticker) {
+    msg.stickerEmoji = _.get(status, '0')
+    msg.mediaSize = _.get(status, '1').replace('KB', '').trim()
+  }
+  if (msg.isPhoto) {
+    msg.mediaResolution = _.get(status, '0')
+    msg.mediaSize = _.get(status, '1').replace('KB', '').trim()
+  }
+  if (msg.isAnimation) {
+    msg.mediaSize = _.get(status, '0').replace('KB', '').trim()
+  }
+
   data.push(msg);
 });
 
