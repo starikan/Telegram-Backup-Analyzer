@@ -1,0 +1,18 @@
+{
+  "name": "telegrammanalyze",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No test specified\"",
+    "start": "node -r esm index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "dayjs": "^1.8.19",
+    "esm": "^3.2.25",
+    "lodash": "^4.17.15"
+  }
+}
